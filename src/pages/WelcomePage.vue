@@ -1,5 +1,5 @@
 <template>
-  <q-page class="welcome-page">
+  <main class="welcome-page">
     <div class="welcome-bg" aria-hidden="true"></div>
     <div class="welcome-overlay" aria-hidden="true"></div>
     <div class="orb orb-primary" aria-hidden="true"></div>
@@ -59,7 +59,7 @@
         </q-card-section>
       </q-card>
     </div>
-  </q-page>
+  </main>
 </template>
 
 <script setup>
