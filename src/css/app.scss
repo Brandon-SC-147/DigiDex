@@ -1,0 +1,39 @@
+/* app global css in SCSS form */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+}
+
+// Gradiente de texto estilo "glow digital"
+.text-digimon-gradient {
+  background: linear-gradient(120deg, $secondary 0%, $accent 55%, $info 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+// Tarjeta con toque holográfico al pasar el cursor
+.hover-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  will-change: transform;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 28px rgba(15, 98, 254, 0.28) !important;
+  }
+}
+
+// Fondo sutil del catálogo
+.dex-page-bg {
+  background:
+    radial-gradient(1200px 500px at 90% -10%, rgba(15, 98, 254, 0.16) 0%, transparent 60%),
+    radial-gradient(900px 420px at -10% 110%, rgba(255, 204, 0, 0.1) 0%, transparent 55%),
+    $dark-page;
+}
