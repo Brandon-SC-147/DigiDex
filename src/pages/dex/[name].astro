@@ -1,0 +1,260 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getAllDigimons, getDigimonByName } from '../../services/digimonService.js';
+
+export async function getStaticPaths() {
+  const digimons = await getAllDigimons();
+  return digimons.map((d) => ({
+    params: { name: d.name },
+    props: { digimon: d },
+  }));
+}
+
+const { name } = Astro.params;
+
+let digimon = Astro.props.digimon ?? null;
+
+if (!digimon) {
+  try {
+    const data = await getDigimonByName(name);
+    digimon = Array.isArray(data) && data.length > 0 ? data[0] : null;
+  } catch {
+    digimon = null;
+  }
+}
+
+const LEVEL_CLASSES = {
+  Fresh: 'level-Fresh',
+  'In Training': 'level-InTraining',
+  Rookie: 'level-Rookie',
+  Champion: 'level-Champion',
+  Ultimate: 'level-Ultimate',
+  Mega: 'level-Mega',
+  Armor: 'level-Armor',
+};
+
+const levelClass = digimon ? (LEVEL_CLASSES[digimon.level] ?? 'level-Unknown') : 'level-Unknown';
+const title = digimon ? `${digimon.name} — DigiDex Web` : 'No encontrado — DigiDex Web';
+---
+<Layout title={title}>
+  <main class="dex-page-bg">
+    <div class="container detail-container">
+      <a href="/dex" class="back-link">
+        <span class="material-icons">arrow_back</span> Volver al Dex
+      </a>
+
+      {!digimon ? (
+        <section class="error-card">
+          <div class="state-block">
+            <span class="material-icons state-icon">help_outline</span>
+            <div class="state-heading">Digimon no encontrado</div>
+            <div class="state-sub">No existe una criatura con ese nombre en la base de datos.</div>
+          </div>
+        </section>
+      ) : (
+        <div class="detail-grid">
+          <section class="detail-visual">
+            <img src={digimon.img} alt={digimon.name} class="detail-img" />
+            <h1 class="detail-name">{digimon.name}</h1>
+            <span class={`badge detail-badge ${levelClass}`}>{digimon.level}</span>
+          </section>
+
+          <section>
+            <div class="detail-heading">DATOS DE ANÁLISIS</div>
+            <ul class="detail-list">
+              <li class="detail-item">
+                <span class="material-icons item-icon icon-yellow">fingerprint</span>
+                <span>
+                  <span class="item-caption">NOMBRE</span>
+                  <span class="item-value">{digimon.name}</span>
+                </span>
+              </li>
+              <li class="detail-item">
+                <span class="material-icons item-icon icon-cyan">trending_up</span>
+                <span>
+                  <span class="item-caption">NIVEL DE EVOLUCIÓN</span>
+                  <span class="item-value">{digimon.level}</span>
+                </span>
+              </li>
+            </ul>
+            <div class="data-note">
+              <span class="material-icons note-icon">info_outline</span>
+              Datos obtenidos de la API pública de Digimon.
+            </div>
+          </section>
+        </div>
+      )}
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .detail-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 16px 16px 48px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    padding: 6px 4px;
+    border-radius: 6px;
+  }
+
+  .back-link:hover {
+    color: var(--secondary);
+  }
+
+  .detail-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 900px) {
+    .detail-grid {
+      grid-template-columns: 5fr 7fr;
+    }
+  }
+
+  .detail-visual {
+    background: var(--card-bg);
+    border: 1px solid rgba(15, 98, 254, 0.45);
+    border-radius: 18px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    padding: 24px;
+    text-align: center;
+  }
+
+  .detail-img {
+    width: 100%;
+    max-width: 320px;
+    filter: drop-shadow(0 0 18px rgba(255, 204, 0, 0.25));
+    animation: float 3.5s ease-in-out infinite;
+  }
+
+  .detail-name {
+    font-size: clamp(26px, 4vw, 34px);
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: var(--secondary);
+    margin: 12px 0 10px;
+    text-transform: uppercase;
+  }
+
+  .detail-badge {
+    padding: 8px 16px;
+    font-size: 16px;
+  }
+
+  .detail-heading {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--secondary);
+    margin-bottom: 14px;
+  }
+
+  .detail-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .detail-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .detail-item + .detail-item {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .item-icon {
+    font-size: 28px;
+  }
+
+  .icon-yellow { color: var(--secondary); }
+  .icon-cyan { color: var(--info); }
+
+  .item-caption {
+    display: block;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.55);
+    letter-spacing: 1px;
+  }
+
+  .item-value {
+    display: block;
+    font-size: 16px;
+    color: #fff;
+    margin-top: 2px;
+  }
+
+  .data-note {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.55);
+    margin-top: 16px;
+  }
+
+  .note-icon {
+    font-size: 16px;
+    margin-right: 6px;
+    color: var(--info);
+  }
+
+  .error-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 82, 82, 0.4);
+    border-radius: var(--radius);
+  }
+
+  .state-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 48px 24px;
+  }
+
+  .state-icon {
+    font-size: 56px;
+    color: #9e9e9e;
+  }
+
+  .state-heading {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin-top: 12px;
+  }
+
+  .state-sub {
+    color: rgba(255, 255, 255, 0.55);
+    margin-top: 6px;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+</style>

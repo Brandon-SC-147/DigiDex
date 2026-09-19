@@ -1,0 +1,166 @@
+---
+interface Digimon {
+  name: string;
+  img: string;
+  level: string;
+}
+
+interface Props {
+  digimon: Digimon;
+}
+
+const { digimon } = Astro.props;
+
+const LEVEL_CLASSES: Record<string, string> = {
+  Fresh: 'level-Fresh',
+  'In Training': 'level-InTraining',
+  Rookie: 'level-Rookie',
+  Champion: 'level-Champion',
+  Ultimate: 'level-Ultimate',
+  Mega: 'level-Mega',
+  Armor: 'level-Armor',
+};
+
+const levelClass = LEVEL_CLASSES[digimon.level] ?? 'level-Unknown';
+const detailHref = `/dex/${encodeURIComponent(digimon.name)}`;
+---
+<article class="digi-card hover-lift">
+  <div class="img-container">
+    <img src={digimon.img} alt={digimon.name} class="digi-img" loading="lazy" />
+    <div class="scan-line"></div>
+  </div>
+  <div class="digi-body">
+    <div>
+      <div class="digi-name">{digimon.name}</div>
+      <div class="digi-meta">
+        <span class={`badge ${levelClass}`}>{digimon.level}</span>
+        <span class="digi-kind">DIGIMON</span>
+      </div>
+    </div>
+    <a href={detailHref} class="btn-text digi-link">
+      Ver ficha <span class="material-icons">arrow_forward</span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .digi-card {
+    width: 100%;
+    max-width: 240px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--dark);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .digi-card:hover {
+    border-color: rgba(15, 98, 254, 0.7);
+  }
+
+  .img-container {
+    position: relative;
+    height: 180px;
+    background:
+      radial-gradient(120% 120% at 50% 20%, rgba(15, 98, 254, 0.16) 0%, transparent 60%),
+      #fff;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .digi-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 14px;
+    transition: transform 0.35s ease;
+  }
+
+  .digi-card:hover .digi-img {
+    transform: scale(1.08);
+  }
+
+  .digi-body {
+    padding: 10px;
+    color: #fff;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .digi-name {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: var(--secondary);
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .digi-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .digi-kind {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  .digi-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 100%;
+    text-decoration: none;
+    margin-top: 8px;
+  }
+
+  /* Línea sensora: barrido de arriba a abajo al pasar el mouse */
+  .scan-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -25%;
+    height: 52px;
+    opacity: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(45, 226, 230, 0.18) 28%,
+      rgba(45, 226, 230, 0.7) 44%,
+      #ffcc00 50%,
+      rgba(45, 226, 230, 0.7) 56%,
+      rgba(45, 226, 230, 0.18) 72%,
+      transparent 100%
+    );
+    filter: drop-shadow(0 0 12px rgba(45, 226, 230, 0.9));
+    transition: opacity 0.25s ease;
+  }
+
+  .digi-card:hover .scan-line {
+    opacity: 1;
+    animation: sensor-sweep 1.1s linear infinite;
+  }
+
+  @keyframes sensor-sweep {
+    0% {
+      top: -25%;
+    }
+    100% {
+      top: 110%;
+    }
+  }
+</style>

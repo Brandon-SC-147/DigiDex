@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="404 — DigiDex Web">
+  <main class="dex-page-bg not-found">
+    <div class="not-found-inner">
+      <div class="not-found-code">404</div>
+      <div class="not-found-msg">Oops. Fuera del Mundo Digital...</div>
+      <div class="not-found-sub">La página que buscas no existe o fue borrada por un Digimon.</div>
+      <div class="not-found-actions">
+        <a class="btn btn-primary" href="/">
+          <span class="material-icons">home</span> Ir al inicio
+        </a>
+        <a class="btn btn-outline" href="/dex">
+          <span class="material-icons">pets</span> Explorar el Dex
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .not-found {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 48px 16px;
+    min-height: calc(100vh - 57px);
+  }
+
+  .not-found-code {
+    font-size: clamp(90px, 22vh, 150px);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--secondary);
+    text-shadow: 0 0 40px rgba(255, 204, 0, 0.35);
+  }
+
+  .not-found-msg {
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 8px;
+  }
+
+  .not-found-sub {
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 8px;
+  }
+
+  .not-found-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 32px;
+  }
+</style>

@@ -1,11 +1,9 @@
 # Dependencias
 node_modules/
 
-# Build / caché de Quasar
-.quasar/
-/dist/
-/quasar.config.*.temporary.compiled*
-/tsconfig.tsbuildinfo
+# Build / caché de Astro
+.astro/
+dist/
 
 # Entorno (nunca subir secretos)
 .env
@@ -30,12 +28,3 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
-
-# Cordova / Capacitor / Electron
-/src-cordova/node_modules
-/src-cordova/platforms
-/src-cordova/plugins
-/src-cordova/www
-/src-capacitor/www
-/src-capacitor/node_modules
-/src-electron/node_modules

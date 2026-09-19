@@ -1,6 +1,6 @@
 # DigiDex Web
 
-DigiDex Web es una aplicación web interactiva desarrollada con Vue.js y Quasar Framework que permite explorar el universo Digimon mediante información obtenida desde una API pública.
+DigiDex Web es una aplicación web interactiva desarrollada con Astro que permite explorar el universo Digimon mediante información obtenida desde una API pública.
 
 La aplicación permite buscar Digimon, filtrarlos por nivel y consultar una ficha individual con la información disponible de cada criatura digital.
 
@@ -34,15 +34,11 @@ Bienvenida → Explorar DigiDex → Catálogo → Buscar/Filtrar → Detalle del
 
 ## Tecnologías
 
-- Vue 3
-- Quasar Framework 2
-- Vue Router 4
-- Pinia
-- Axios
-- Vite
+- Astro 5
 - JavaScript
 - HTML5
-- SCSS / CSS
+- CSS
+- Fetch API (sin Axios)
 
 ## API
 
@@ -73,27 +69,27 @@ La aplicación muestra únicamente la información que la API realmente entrega.
 ```
 src/
 ├── components/
-│   ├── DigimonCard.vue
-│   └── DigimonFilter.vue
-├── css/
+│   ├── DigimonCard.astro
+│   └── DigimonFilter.astro
 ├── layouts/
-│   └── MainLayout.vue
+│   └── Layout.astro
 ├── pages/
-│   ├── WelcomePage.vue
-│   ├── DigimonList.vue
-│   ├── DigimonDetail.vue
-│   └── ErrorNotFound.vue
-├── router/
+│   ├── index.astro
+│   ├── dex/
+│   │   ├── index.astro
+│   │   └── [name].astro
+│   └── 404.astro
 ├── services/
 │   └── digimonService.js
-└── stores/
+└── styles/
+    └── global.css
 ```
 
 ## Instalación
 
 ```bash
-git clone https://github.com/Brandon-SC-147/DigiDex-Web.git
-cd DigiDex-Web
+git clone https://github.com/Brandon-SC-147/DigiDex.git
+cd DigiDex
 npm install
 npm run dev
 ```
@@ -104,10 +100,11 @@ npm run dev
 npm run build
 ```
 
-## Verificación de código
+## Vista previa de producción
 
 ```bash
-npm run lint
+npm run build
+npm run preview
 ```
 
 ## Autor

@@ -1,0 +1,280 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="DigiDex Web — Explora el Mundo Digital">
+  <main class="welcome-page">
+    <div class="welcome-bg" aria-hidden="true"></div>
+    <div class="welcome-overlay" aria-hidden="true"></div>
+    <div class="orb orb-primary" aria-hidden="true"></div>
+    <div class="orb orb-secondary" aria-hidden="true"></div>
+    <div class="orb orb-accent" aria-hidden="true"></div>
+
+    <div class="welcome-content">
+      <section class="welcome-card">
+        <div class="text-center">
+          <div class="brand-badge">ENCICLOPEDIA DIGITAL</div>
+
+          <h1 class="welcome-title">
+            <span class="text-digimon-gradient">DigiDex Web</span>
+          </h1>
+
+          <div class="welcome-subtitle">Explora el Mundo Digital</div>
+
+          <div class="divider-icon material-icons">edit</div>
+
+          <p class="welcome-desc">
+            Descubre Digimon, consulta sus características, niveles, atributos e información
+            detallada.
+          </p>
+
+          <div class="feature-row">
+            <span class="badge badge-outline feature-chip">
+              <span class="material-icons chip-icon chip-yellow">pets</span>
+              <span id="digimon-count">209</span>+ Digimon
+            </span>
+            <span class="badge badge-outline feature-chip">
+              <span class="material-icons chip-icon chip-cyan">trending_up</span>
+              Niveles de evolución
+            </span>
+            <span class="badge badge-outline feature-chip">
+              <span class="material-icons chip-icon chip-orange">search</span>
+              Búsqueda rápida
+            </span>
+          </div>
+
+          <a class="btn btn-primary cta-btn" href="/dex">
+            <span class="material-icons">travel_explore</span> Explorar DigiDex
+          </a>
+        </div>
+
+        <div class="welcome-footer">
+          <span class="material-icons footer-icon">public</span>
+          Un viaje por el Mundo Digital
+        </div>
+      </section>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import { getAllDigimons } from '../services/digimonService.js';
+
+  (async () => {
+    try {
+      const data = await getAllDigimons();
+      if (Array.isArray(data) && data.length > 0) {
+        document.getElementById('digimon-count').textContent = String(data.length);
+      }
+    } catch {
+      // El conteo por defecto se mantiene si la API no responde.
+    }
+  })();
+</script>
+
+<style>
+  .welcome-page {
+    position: relative;
+    height: calc(100vh - 57px);
+    min-height: 560px;
+    overflow: hidden;
+    background: var(--dark-page);
+  }
+
+  .welcome-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('/backgrounds/digital-world.jpg');
+    background-position: center;
+    background-size: cover;
+    animation: slow-zoom 24s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  .welcome-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(11, 15, 31, 0.78) 0%,
+      rgba(11, 15, 31, 0.55) 50%,
+      rgba(11, 15, 31, 0.9) 100%
+    );
+  }
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0.5;
+    pointer-events: none;
+    animation: float-orb 9s ease-in-out infinite;
+  }
+
+  .orb-primary {
+    width: 340px;
+    height: 340px;
+    background: rgba(15, 98, 254, 0.55);
+    top: -80px;
+    right: -60px;
+  }
+
+  .orb-secondary {
+    width: 260px;
+    height: 260px;
+    background: rgba(255, 204, 0, 0.4);
+    bottom: -60px;
+    left: -40px;
+    animation-delay: -3s;
+  }
+
+  .orb-accent {
+    width: 180px;
+    height: 180px;
+    background: rgba(255, 107, 44, 0.45);
+    bottom: 18%;
+    right: 12%;
+    animation-delay: -6s;
+  }
+
+  .welcome-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .welcome-card {
+    width: 100%;
+    max-width: 500px;
+    background: rgba(21, 27, 46, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 24px;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+    padding: 28px 24px 20px;
+    text-align: center;
+    animation: card-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .brand-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 204, 0, 0.45);
+    color: var(--secondary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 18px;
+    animation: fade-up 0.7s 0.15s ease both;
+  }
+
+  .welcome-title {
+    font-size: clamp(38px, 8vw, 56px);
+    font-weight: 900;
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin: 0;
+    animation: fade-up 0.7s 0.25s ease both;
+  }
+
+  .welcome-subtitle {
+    font-size: clamp(17px, 3.4vw, 22px);
+    color: rgba(255, 255, 255, 0.92);
+    font-weight: 500;
+    letter-spacing: 2px;
+    margin-top: 8px;
+    animation: fade-up 0.7s 0.35s ease both;
+  }
+
+  .divider-icon {
+    margin-top: 20px;
+    opacity: 0.6;
+    font-size: 14px;
+    color: #9e9e9e;
+    animation: fade-up 0.7s 0.45s ease both;
+  }
+
+  .welcome-desc {
+    max-width: 360px;
+    margin: 14px auto 0;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 15px;
+    line-height: 1.6;
+    animation: fade-up 0.7s 0.55s ease both;
+  }
+
+  .feature-row {
+    margin-top: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    animation: fade-up 0.7s 0.65s ease both;
+  }
+
+  .feature-chip {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .chip-icon {
+    font-size: 15px;
+    margin-right: 4px;
+  }
+
+  .chip-yellow { color: var(--secondary); }
+  .chip-cyan { color: var(--info); }
+  .chip-orange { color: var(--accent); }
+
+  .cta-btn {
+    margin-top: 24px;
+    animation: fade-up 0.7s 0.75s ease both;
+  }
+
+  .welcome-footer {
+    margin-top: 20px;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    animation: fade-up 0.7s 0.9s ease both;
+  }
+
+  .footer-icon {
+    font-size: 14px;
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes card-in {
+    from { opacity: 0; transform: translateY(26px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes slow-zoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.08); }
+  }
+
+  @keyframes float-orb {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-26px); }
+  }
+
+  @media (max-width: 480px) {
+    .welcome-card {
+      border-radius: 20px;
+    }
+  }
+</style>
